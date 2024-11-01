@@ -1,5 +1,37 @@
 import random
 
+def convert_Xto10(number, system):
+    result = 0
+    order = 0
+    if system <= 10:
+        number_int = int(number)
+        while number_int > 0:
+            temp = (number_int % 10) * system ** order
+            order += 1
+            number_int //= 10
+            result += temp
+    elif system > 10:
+        number_str = str(number)
+        while number_str != '':
+            if number_str[-1] == 'A':
+                temp = 10 * system ** order
+            elif number_str[-1] == 'B':
+                temp = 11 * system ** order
+            elif number_str[-1] == 'C':
+                temp = 12 * system ** order
+            elif number_str[-1] == 'D':
+                temp = 13 * system ** order
+            elif number_str[-1] == 'E':
+                temp = 14 * system ** order
+            elif number_str[-1] == 'F':
+                temp = 15 * system ** order
+            else:
+                temp = (int(number_str[-1]) % 10) * system ** order
+            order += 1
+            number_str = number_str[:-1]
+            result += temp
+
+    return result
 def convert_10toX(number, system):
     result = []
     number_int = int(number)
@@ -67,3 +99,6 @@ def generate_tasks():
         tasks_ret.append(logic_op_and_mask_toZero())
     return tasks_ret
 
+tasks = generate_tasks()
+for task in tasks:
+    print(task)

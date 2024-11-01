@@ -17,10 +17,11 @@ def sum_8bit_signed():
         'VAR1': task_number,
         'VAR2': second_task_number,
         'ANSWER': answer
-    }}
+    }
 
 def generate_tasks():
     tasks_ret = []
     for i in range(100):
         tasks_ret.append(sum_8bit_signed())
     return tasks_ret
+

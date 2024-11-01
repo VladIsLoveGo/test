@@ -46,7 +46,7 @@ def unsigned_int_in_mem():
 
     return {
         'VAR1': task_number,
-        'ANSWER': answer
+        'ANSWER': answer_number
     }
 
 def generate_tasks():

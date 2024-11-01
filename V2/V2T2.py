@@ -1,5 +1,37 @@
 import random
 
+def convert_Xto10(number, system):
+    result = 0
+    order = 0
+    if system <= 10:
+        number_int = int(number)
+        while number_int > 0:
+            temp = (number_int % 10) * system ** order
+            order += 1
+            number_int //= 10
+            result += temp
+    elif system > 10:
+        number_str = str(number)
+        while number_str != '':
+            if number_str[-1] == 'A':
+                temp = 10 * system ** order
+            elif number_str[-1] == 'B':
+                temp = 11 * system ** order
+            elif number_str[-1] == 'C':
+                temp = 12 * system ** order
+            elif number_str[-1] == 'D':
+                temp = 13 * system ** order
+            elif number_str[-1] == 'E':
+                temp = 14 * system ** order
+            elif number_str[-1] == 'F':
+                temp = 15 * system ** order
+            else:
+                temp = (int(number_str[-1]) % 10) * system ** order
+            order += 1
+            number_str = number_str[:-1]
+            result += temp
+
+    return result
 def convert_10toX(number, system):
     result = []
     number_int = int(number)
@@ -35,6 +67,7 @@ def convert_10toX(number, system):
 def convert_XtoX(number, from_system, to_system):
     return convert_10toX(convert_Xto10(number, from_system), to_system)
 
+
 def logic_op_and_mask_Set():
     first_bit = random.randint(0, 15)
     second_bit = random.randint(0, 15)
@@ -54,7 +87,6 @@ def logic_op_and_mask_Set():
             answer += "0"
     answer = f"OR {convert_XtoX(answer[::-1], 2, 16)}"
 
-
     return {
         'VAR1': first_bit,
         'VAR2': second_bit,
@@ -62,9 +94,9 @@ def logic_op_and_mask_Set():
         'ANSWER': answer
     }
 
+
 def generate_tasks():
     tasks_ret = []
     for i in range(100):
         tasks_ret.append(logic_op_and_mask_Set())
     return tasks_ret
-

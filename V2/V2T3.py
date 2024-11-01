@@ -1,4 +1,5 @@
 import random
+import operator
 
 def convert_10toX(number, system):
     result = []

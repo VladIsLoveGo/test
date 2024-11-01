@@ -29,3 +29,4 @@ def generate_tasks():
     for i in range(100):
         tasks_ret.append(sum_16bit_unsigned())
     return tasks_ret
+
