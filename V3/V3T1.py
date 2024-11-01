@@ -82,7 +82,3 @@ def generate_tasks():
     for i in range(100):
         tasks_ret.append(float_10to2())
     return tasks_ret
-
-tasks = generate_tasks()
-for task in tasks:
-    print(task)
