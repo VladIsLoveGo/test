@@ -49,7 +49,7 @@ def log_op_OR():
         'ANSWER': answer
     }
 
-def generate_tasks():
+def generate():
     tasks_ret = []
     for i in range(100):
         tasks_ret.append(log_op_OR())

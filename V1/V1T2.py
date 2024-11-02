@@ -90,7 +90,7 @@ def int_in_mem():
         'ANSWER': answer_number
     }
 
-def generate_tasks():
+def generate():
     tasks_ret = []
     for i in range(100):
         tasks_ret.append(int_in_mem())

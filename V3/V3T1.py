@@ -77,7 +77,7 @@ def float_10to2(is_random=True, sig=0, int_p=7, float_p=25):
         'ANSWER': answer
     }
 
-def generate_tasks():
+def generate():
     tasks_ret = []
     for i in range(100):
         tasks_ret.append(float_10to2())

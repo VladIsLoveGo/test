@@ -102,18 +102,18 @@ def shift_16bit():
     return {
         'VAR1': first_bit,
         'VAR2': second_bit,
-        'python_answer1': first_answer_python,
-        'python_answer2': second_answer_python,
-        'cpp_answer1': first_answer_cpp,
-        'cpp_answer2': second_answer_cpp
+        'ANSWER1_python': first_answer_python,
+        'ANSWER2_python': second_answer_python,
+        'ANSWER1_cpp': first_answer_cpp,
+        'ANSWER2_cpp': second_answer_cpp
     }
 
-def generate_tasks():
+def generate():
     tasks_ret = []
     for i in range(100):
         tasks_ret.append(shift_16bit())
     return tasks_ret
 
-tasks = generate_tasks()
+tasks = generate()
 for task in tasks:
     print(task)

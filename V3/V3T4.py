@@ -79,7 +79,7 @@ def multiplication(is_random=True):
     }
 
 
-def generate_tasks():
+def generate():
     tasks_ret = []
     for i in range(100):
         tasks_ret.append(multiplication())

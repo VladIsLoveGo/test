@@ -20,7 +20,7 @@ def sum_16bit_signed():
         'ANSWER': answer
     }
 
-def generate_tasks():
+def generate():
     tasks_ret = []
     for i in range(100):
         tasks_ret.append(sum_16bit_signed())

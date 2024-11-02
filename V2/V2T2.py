@@ -95,8 +95,9 @@ def logic_op_and_mask_Set():
     }
 
 
-def generate_tasks():
+def generate():
     tasks_ret = []
     for i in range(100):
         tasks_ret.append(logic_op_and_mask_Set())
     return tasks_ret
+

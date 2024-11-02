@@ -93,12 +93,8 @@ def logic_op_and_mask_toZero():
         'ANSWER': answer
     }
 
-def generate_tasks():
+def generate():
     tasks_ret = []
     for i in range(100):
         tasks_ret.append(logic_op_and_mask_toZero())
     return tasks_ret
-
-tasks = generate_tasks()
-for task in tasks:
-    print(task)
