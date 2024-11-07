@@ -46,7 +46,8 @@ def log_op_OR():
     return {
         'VAR1': task_number,
         'VAR2': second_task_number,
-        'ANSWER': answer
+        'ANSWER_HEX': answer,
+        'ANSWER_FHEX':f"0x{answer}"
     }
 
 def generate():

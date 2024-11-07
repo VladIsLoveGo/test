@@ -62,7 +62,6 @@ def convert_10toX(number, system):
     return ''.join(result[::-1])
 
 
-# Перевод из X системы счисления в X
 
 def convert_XtoX(number, from_system, to_system):
     return convert_10toX(convert_Xto10(number, from_system), to_system)
@@ -85,14 +84,15 @@ def logic_op_and_mask_Set():
             answer += "1"
         else:
             answer += "0"
-    answer = f"OR {convert_XtoX(answer[::-1], 2, 16)}"
+    hex_answer = convert_XtoX(answer[::-1], 2, 16)
 
     return {
         'VAR1': first_bit,
         'VAR2': second_bit,
         'VAR3': third_bit,
-        'ANSWER': answer
+        'ANSWER': hex_answer
     }
+
 
 
 def generate():
@@ -100,4 +100,3 @@ def generate():
     for i in range(100):
         tasks_ret.append(logic_op_and_mask_Set())
     return tasks_ret
-
