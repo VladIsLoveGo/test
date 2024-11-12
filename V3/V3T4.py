@@ -81,17 +81,24 @@ def multiplication(is_random=True):
     normalized_sum, sum_order = normalize_binary(binary_mul)
 
     return {
-        'VAR1': num1,
-        'VAR2': num2,
-        'ANSWER_binary1': bin1,
-        'ANSWER_binary2': bin2,
-        'ANSWER_normalized1': f"{normalized_bin1} * 2^{order1}",
-        'ANSWER_normalized2': f"{normalized_bin2} * 2^{order2}",
-        'ANSWER_align1': aligned_bin1,
-        'ANSWER_align2': aligned_bin2,
-        'ANSWER_multiplication': binary_mul,
-        'ANSWER_normalized': f"{normalized_sum} * 2^{sum_order}",
-        'ANSWER': answer
+        'TITLE1_binary1': 'Переведите первое слагаемое в двоичный код.',
+        'ANSWER1_binary1': bin1,
+        'TITLE2_binary2': 'Переведите второе слагаемое в двоичный код.',
+        'ANSWER2_binary2': bin2,
+        'TITLE3_normalized1': 'Выполните нормализацию первого слагаемого.',
+        'ANSWER3_normalized1': f"{normalized_bin1} * 2^{order1}",
+        'TITLE4_normalized2': 'Выполните нормализацию второго слагаемого.',
+        'ANSWER4_normalized2': f"{normalized_bin2} * 2^{order2}",
+        'TITLE5_align1': 'Приведите к одному порядку первое слагаемое.',
+        'ANSWER5_align1': aligned_bin1,
+        'TITLE6_align2': 'Приведите к одному порядку второе слагаемое.',
+        'ANSWER6_align2': aligned_bin2,
+        'TITLE7_multiplication': 'Выполните операцию умножения (ответ запишите в двоичной системе счисления).',
+        'ANSWER7_multiplication': binary_mul,
+        'TITLE8_normalized_result': 'Выполните нормализацию результата.',
+        'ANSWER8_normalized_result': f"{normalized_sum} * 2^{sum_order}",
+        'TITLE9_decimal_result': 'Переведите результат в десятичную систему счисления.',
+        'ANSWER9_decimal_result': answer
     }
 
 def generate():

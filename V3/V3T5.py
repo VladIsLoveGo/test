@@ -83,14 +83,23 @@ def division(is_random=True):
     return {
         'VAR1': num1,
         'VAR2': num2,
+        'TITLE1_binary1': "Переведите первое слагаемое в двоичный код.",
         'ANSWER_binary1': bin1,
+        'TITLE2_binary2': "Переведите второе слагаемое в двоичный код.",
         'ANSWER_binary2': bin2,
+        'TITLE3_normalized1': "Выполните нормализацию первого слагаемого.",
         'ANSWER_normalized1': f"{normalized_bin1} * 2^{order1}",
+        'TITLE4_normalized2': "Выполните нормализацию второго слагаемого.",
         'ANSWER_normalized2': f"{normalized_bin2} * 2^{order2}",
+        'TITLE5_align1': "Приведите к одному порядку первое слагаемое.",
         'ANSWER_align1': aligned_bin1,
+        'TITLE6_align2': "Приведите к одному порядку второе слагаемое.",
         'ANSWER_align2': aligned_bin2,
+        'TITLE7_division': "Выполните операцию деления (ответ запишите в двоичной системе счисления).",
         'ANSWER_division': binary_div,
+        'TITLE8_normalized_result': "Выполните нормализацию результата.",
         'ANSWER_normalized': f"{normalized_sum} * 2^{sum_order}",
+        'TITLE9_decimal_result': "Переведите результат в десятичную систему счисления.",
         'ANSWER': answer
     }
 

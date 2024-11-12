@@ -16,14 +16,12 @@ def to_binary(num):
 
     return binary_int + '.' + ''.join(binary_frac) if binary_frac else binary_int
 
-
 def binary_to_decimal(binary_num):
     int_part, frac_part = binary_num.split('.') if '.' in binary_num else (binary_num, '')
     decimal_int = int(int_part, 2) if int_part else 0  # Обработка пустой целой части
     decimal_frac = sum(int(bit) * (2 ** -(i + 1)) for i, bit in enumerate(frac_part))
 
     return decimal_int + decimal_frac
-
 
 def normalize_binary(bin_num):
     if '.' in bin_num:
@@ -46,7 +44,6 @@ def normalize_binary(bin_num):
 
     return mantissa, order
 
-
 def align_binary(bin1, bin2):
     int_part1, frac_part1 = bin1.split('.') if '.' in bin1 else (bin1, '')
     int_part2, frac_part2 = bin2.split('.') if '.' in bin2 else (bin2, '')
@@ -55,13 +52,11 @@ def align_binary(bin1, bin2):
     frac_part2 = frac_part2.ljust(max_frac_len, '0')
     return f"{int_part1}.{frac_part1}", f"{int_part2}.{frac_part2}"
 
-
 def binary_subtraction(bin1, bin2):
     decimal1 = binary_to_decimal(bin1)
     decimal2 = binary_to_decimal(bin2)
     decimal_diff = decimal1 - decimal2
     return to_binary(decimal_diff)
-
 
 def subtraction(is_random=True):
     float_number_part_array = [5, 25, 75, 125, 375, 625, 875]
@@ -88,17 +83,25 @@ def subtraction(is_random=True):
     return {
         'VAR1': num1,
         'VAR2': num2,
-        'ANSWER_binary1': bin1,
-        'ANSWER_binary2': bin2,
-        'ANSWER_normalized1': f"{normalized_bin1} * 2^{order1}",
-        'ANSWER_normalized2': f"{normalized_bin2} * 2^{order2}",
-        'ANSWER_align1': aligned_bin1,
-        'ANSWER_align2': aligned_bin2,
-        'ANSWER_subtraction': binary_diff,
-        'ANSWER_normalized': f"{normalized_diff} * 2^{diff_order}",
-        'ANSWER': answer
+        'TITLE1_binary1': "Переведите первое слагаемое в двоичный код",
+        'ANSWER1_binary1': bin1,
+        'TITLE2_binary2': "Переведите второе слагаемое в двоичный код",
+        'ANSWER2_binary2': bin2,
+        'TITLE3_normalize1': "Выполните нормализацию первого слагаемого",
+        'ANSWER3_normalized1': f"{normalized_bin1} * 2^{order1}",
+        'TITLE4_normalize2': "Выполните нормализацию второго слагаемого",
+        'ANSWER4_normalized2': f"{normalized_bin2} * 2^{order2}",
+        'TITLE5_align1': "Приведите к одному порядку первое слагаемое",
+        'ANSWER5_align1': aligned_bin1,
+        'TITLE6_align2': "Приведите к одному порядку второе слагаемое",
+        'ANSWER6_align2': aligned_bin2,
+        'TITLE7_subtraction': "Выполните операцию вычитания (ответ запишите в двоичной системе счисления)",
+        'ANSWER7_subtraction': binary_diff,
+        'TITLE8_normalize_result': "Выполните нормализацию результата",
+        'ANSWER8_normalized_result': f"{normalized_diff} * 2^{diff_order}",
+        'TITLE9_decimal_result': "Переведите результат в десятичную систему счисления",
+        'ANSWER9_decimal_result': answer
     }
-
 
 def generate():
     tasks_ret = []
