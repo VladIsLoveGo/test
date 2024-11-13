@@ -87,7 +87,7 @@ def division(is_random=True):
         'ANSWER_binary1': bin1,
         'TITLE2_binary2': "Переведите второе слагаемое в двоичный код.",
         'ANSWER_binary2': bin2,
-        'TITLE3_normalized1': "Выполните нормализацию первого слагаемого.",
+        'TITLE3_normalized1': "Выполните нормализацию первого слагаемого (пример: 1.1101101 * 2^4).",
         'ANSWER_normalized1': f"{normalized_bin1} * 2^{order1}",
         'TITLE4_normalized2': "Выполните нормализацию второго слагаемого.",
         'ANSWER_normalized2': f"{normalized_bin2} * 2^{order2}",
@@ -99,7 +99,7 @@ def division(is_random=True):
         'ANSWER_division': binary_div,
         'TITLE8_normalized_result': "Выполните нормализацию результата.",
         'ANSWER_normalized': f"{normalized_sum} * 2^{sum_order}",
-        'TITLE9_decimal_result': "Переведите результат в десятичную систему счисления.",
+        'TITLE9_decimal_result': "Переведите результат в десятичную систему счисления(округлите результат до 3 чисел после запятой).",
         'ANSWER': answer
     }
 
@@ -108,3 +108,4 @@ def generate():
     for i in range(100):
         tasks_ret.append(division())
     return tasks_ret
+

@@ -67,7 +67,7 @@ def addition(is_random=True):
 
     num1 = int_part1 + float_part1 / 1000
     num2 = int_part2 + float_part2 / 1000
-    answer = round(num1 + num2, 3)
+    decimal_sum = round(num1 + num2, 3)
 
     bin1 = to_binary(num1)
     bin2 = to_binary(num2)
@@ -79,7 +79,6 @@ def addition(is_random=True):
     binary_sum = binary_addition(aligned_bin1, aligned_bin2)
 
     normalized_sum, sum_order = normalize_binary(binary_sum)
-    decimal_sum = binary_to_decimal(binary_sum)
 
     return {
         'VAR1': num1,
@@ -88,7 +87,7 @@ def addition(is_random=True):
         'ANSWER1_binary1': bin1,
         'TITLE2_binary2': 'Переведите второе слагаемое в двоичный код',
         'ANSWER2_binary2': bin2,
-        'TITLE3_normalize1': 'Выполните нормализацию первого слагаемого',
+        'TITLE3_normalize1': 'Выполните нормализацию первого слагаемого (пример: 1.1101101 * 2^4).',
         'ANSWER3_normalize1': f"{normalized_bin1} * 2^{order1}",
         'TITLE4_normalize2': 'Выполните нормализацию второго слагаемого',
         'ANSWER4_normalize2': f"{normalized_bin2} * 2^{order2}",
@@ -101,8 +100,7 @@ def addition(is_random=True):
         'TITLE8_normalized': 'Выполните нормализацию результата',
         'ANSWER8_normalized': f"{normalized_sum} * 2^{sum_order}",
         'TITLE9_decimal': 'Переведите результат в десятичную систему счисления',
-        'ANSWER9_decimal': decimal_sum,
-        'FINAL_ANSWER': answer
+        'ANSWER9_decimal': decimal_sum
     }
 
 def generate():
@@ -110,3 +108,7 @@ def generate():
     for i in range(100):
         tasks_ret.append(addition())
     return tasks_ret
+
+tasks = generate()
+for task in tasks:
+    print(task)

@@ -87,7 +87,7 @@ def subtraction(is_random=True):
         'ANSWER1_binary1': bin1,
         'TITLE2_binary2': "Переведите второе слагаемое в двоичный код",
         'ANSWER2_binary2': bin2,
-        'TITLE3_normalize1': "Выполните нормализацию первого слагаемого",
+        'TITLE3_normalize1': "Выполните нормализацию первого слагаемого (пример: 1.1101101 * 2^4).",
         'ANSWER3_normalized1': f"{normalized_bin1} * 2^{order1}",
         'TITLE4_normalize2': "Выполните нормализацию второго слагаемого",
         'ANSWER4_normalized2': f"{normalized_bin2} * 2^{order2}",
