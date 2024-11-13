@@ -99,7 +99,7 @@ def addition(is_random=True):
         'ANSWER7_addition': binary_sum,
         'TITLE8_normalized': 'Выполните нормализацию результата',
         'ANSWER8_normalized': f"{normalized_sum} * 2^{sum_order}",
-        'TITLE9_decimal': 'Переведите результат в десятичную систему счисления',
+        'TITLE9_decimal': 'Переведите результат в десятичную систему счисления (целую и дробную часть разделяйте точкой).',
         'ANSWER9_decimal': decimal_sum
     }
 

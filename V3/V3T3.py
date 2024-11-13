@@ -99,7 +99,7 @@ def subtraction(is_random=True):
         'ANSWER7_subtraction': binary_diff,
         'TITLE8_normalize_result': "Выполните нормализацию результата",
         'ANSWER8_normalized_result': f"{normalized_diff} * 2^{diff_order}",
-        'TITLE9_decimal_result': "Переведите результат в десятичную систему счисления",
+        'TITLE9_decimal_result': "Переведите результат в десятичную систему счисления (целую и дробную часть разделяйте точкой).",
         'ANSWER9_decimal_result': answer
     }
 

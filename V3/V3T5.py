@@ -99,7 +99,7 @@ def division(is_random=True):
         'ANSWER_division': binary_div,
         'TITLE8_normalized_result': "Выполните нормализацию результата.",
         'ANSWER_normalized': f"{normalized_sum} * 2^{sum_order}",
-        'TITLE9_decimal_result': "Переведите результат в десятичную систему счисления(округлите результат до 3 чисел после запятой).",
+        'TITLE9_decimal_result': "Переведите результат в десятичную систему счисления(округлите результат до 3 чисел после точки).",
         'ANSWER': answer
     }
 
@@ -108,3 +108,4 @@ def generate():
     for i in range(100):
         tasks_ret.append(division())
     return tasks_ret
+

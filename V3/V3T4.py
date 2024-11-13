@@ -98,7 +98,7 @@ def multiplication(is_random=True):
         'ANSWER7_multiplication': binary_mul,
         'TITLE8_normalized_result': 'Выполните нормализацию результата.',
         'ANSWER8_normalized_result': f"{normalized_sum} * 2^{sum_order}",
-        'TITLE9_decimal_result': 'Переведите результат в десятичную систему счисления(округлите результат до 3 чисел после запятой).',
+        'TITLE9_decimal_result': 'Переведите результат в десятичную систему счисления(округлите результат до 3 чисел после точки).',
         'ANSWER9_decimal_result': answer
     }
 
