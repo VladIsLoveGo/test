@@ -67,7 +67,7 @@ def addition(is_random=True):
 
     num1 = int_part1 + float_part1 / 1000
     num2 = int_part2 + float_part2 / 1000
-    decimal_sum = round(num1 + num2, 3)
+    decimal_sum = str(round(num1 + num2, 3))
 
     bin1 = to_binary(num1)
     bin2 = to_binary(num2)

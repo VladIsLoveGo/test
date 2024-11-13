@@ -100,3 +100,4 @@ def generate():
     for i in range(100):
         tasks_ret.append(logic_op_and_mask_Set())
     return tasks_ret
+
