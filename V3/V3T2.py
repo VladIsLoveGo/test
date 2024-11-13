@@ -108,7 +108,3 @@ def generate():
     for i in range(100):
         tasks_ret.append(addition())
     return tasks_ret
-
-tasks = generate()
-for task in tasks:
-    print(task)
