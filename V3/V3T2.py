@@ -191,13 +191,13 @@ def addition(int_part1, float_part1, int_part2, float_part2):
         'ANSWER1_binary1': bin1,
         'TITLE2_binary2': 'Переведите второе слагаемое в двоичный код',
         'ANSWER2_binary2': bin2,
-        'TITLE3_normalize1': 'Выполните нормализацию и приведите к одному порядку первое слагаемое (пример: 1.1101101 * 2^4).',
+        'TITLE3_normalize1': 'Выполните нормализацию и приведите к одному порядку первое слагаемое (пример: 1.1101101 * 2^4)',
         'ANSWER5_align1': f"{aligned_m1} * 2^{aligned_order}",
         'TITLE4_normalize2': 'Выполните нормализацию и приведите к одному порядку второе слагаемое',
         'ANSWER6_align2': f"{aligned_m2} * 2^{aligned_order}",
         'TITLE7_addition': 'Выполните операцию сложения (ответ запишите в двоичной системе счисления)',
         'ANSWER7_addition': f"{binary_sum_cleaned} * 2^{aligned_order}",
-        'TITLE8_normalized': 'Выполните нормализацию результата',
+        'TITLE8_normalized': 'Выполните нормализацию результата (пример: 1001001.11)',
         'ANSWER8_normalized': formatted_normalized,
         'TITLE9_decimal': 'Переведите результат в десятичную систему счисления (целую и дробную часть разделяйте точкой).',
         'ANSWER9_decimal': decimal_result
@@ -214,4 +214,3 @@ def generate(num_tasks=100):
         float_part2 = random.choice(float_parts)
         tasks_ret.append(addition(int_part1, float_part1, int_part2, float_part2))
     return tasks_ret
-

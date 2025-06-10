@@ -1,110 +1,256 @@
 import random
 
+
 def to_binary(num):
-    if num < 0:
-        return '-' + to_binary(-num)  # Обработка отрицательных чисел
+    """Преобразование десятичного числа в двоичное с увеличенной точностью."""
     int_part = int(num)
     frac_part = num - int_part
-    binary_int = bin(int_part)[2:]  # Преобразуем целую часть в бинарное
-
+    binary_int = bin(abs(int_part))[2:]
     binary_frac = []
-    while frac_part > 0 and len(binary_frac) < 8:
+    while frac_part > 0 and len(binary_frac) < 10:  # Точность до 10 бит
         frac_part *= 2
         bit = int(frac_part)
         binary_frac.append(str(bit))
         frac_part -= bit
+    binary = binary_int + '.' + ''.join(binary_frac) if binary_frac else binary_int
+    return '-' + binary if num < 0 else binary
 
-    return binary_int + '.' + ''.join(binary_frac) if binary_frac else binary_int
-
-def binary_to_decimal(binary_num):
-    int_part, frac_part = binary_num.split('.') if '.' in binary_num else (binary_num, '')
-    decimal_int = int(int_part, 2) if int_part else 0  # Обработка пустой целой части
-    decimal_frac = sum(int(bit) * (2 ** -(i + 1)) for i, bit in enumerate(frac_part))
-
-    return decimal_int + decimal_frac
 
 def normalize_binary(bin_num):
-    if '.' in bin_num:
-        int_part, frac_part = bin_num.split('.')
+    """Нормализация двоичного числа: mantissa * 2^order."""
+    is_negative = bin_num.startswith('-')
+    if is_negative:
+        bin_num = bin_num[1:]
+    if '.' not in bin_num:
+        bin_num += '.0'
+    int_part, frac_part = bin_num.split('.')
+    if int_part == '0' and '1' not in frac_part:
+        return '0.0', 0
+    elif int_part != '0':
+        order = len(int_part) - 1
+        mantissa = '1.' + int_part[1:] + frac_part
     else:
-        int_part, frac_part = bin_num, ''
-
-    if int_part == '0':
-        first_significant_index = next((i for i, bit in enumerate(frac_part) if bit == '1'), len(frac_part))
-        if first_significant_index < len(frac_part):
-            mantissa = '0.' + frac_part[first_significant_index + 1:]
-            order = - (first_significant_index + 1)
-        else:
+        first_one = frac_part.index('1') if '1' in frac_part else -1
+        if first_one == -1:
             return '0.0', 0
-    else:
-        normalized_int = int_part.lstrip('0')
-        mantissa = normalized_int + frac_part
-        order = len(normalized_int) - 1
-        mantissa = '1.' + mantissa[1:]
-
+        order = -(first_one + 1)
+        mantissa = '1.' + frac_part[first_one + 1:]
+    if is_negative:
+        mantissa = '-' + mantissa
     return mantissa, order
 
-def align_binary(bin1, bin2):
-    int_part1, frac_part1 = bin1.split('.') if '.' in bin1 else (bin1, '')
-    int_part2, frac_part2 = bin2.split('.') if '.' in bin2 else (bin2, '')
-    max_frac_len = max(len(frac_part1), len(frac_part2))
-    frac_part1 = frac_part1.ljust(max_frac_len, '0')
-    frac_part2 = frac_part2.ljust(max_frac_len, '0')
-    return f"{int_part1}.{frac_part1}", f"{int_part2}.{frac_part2}"
+
+def align_orders(mantissa1, order1, mantissa2, order2):
+    """Выравнивание мантисс по одному порядку без ошибочного сдвига при равных порядках."""
+    is_neg1 = mantissa1.startswith('-')
+    is_neg2 = mantissa2.startswith('-')
+    m1 = mantissa1[1:] if is_neg1 else mantissa1
+    m2 = mantissa2[1:] if is_neg2 else mantissa2
+    if order1 == order2:
+        return mantissa1, mantissa2, order1
+    elif order1 < order2:
+        diff = order2 - order1
+        m1_parts = m1.split('.')
+        int_part = m1_parts[0]
+        frac_part = m1_parts[1] if len(m1_parts) > 1 else ''
+        if diff <= len(int_part):
+            new_int = int_part[:-diff] if diff < len(int_part) else '0'
+            new_frac = int_part[-diff:] + frac_part
+        else:
+            extra_zeros = diff - len(int_part)
+            new_frac = '0' * extra_zeros + int_part + frac_part
+            new_int = '0'
+        shifted = new_int + '.' + new_frac
+        if is_neg1:
+            shifted = '-' + shifted
+        return shifted, mantissa2, order2
+    else:
+        diff = order1 - order2
+        m2_parts = m2.split('.')
+        int_part = m2_parts[0]
+        frac_part = m2_parts[1] if len(m2_parts) > 1 else ''
+        if diff <= len(int_part):
+            new_int = int_part[:-diff] if diff < len(int_part) else '0'
+            new_frac = int_part[-diff:] + frac_part
+        else:
+            extra_zeros = diff - len(int_part)
+            new_frac = '0' * extra_zeros + int_part + frac_part
+            new_int = '0'
+        shifted = new_int + '.' + new_frac
+        if is_neg2:
+            shifted = '-' + shifted
+        return mantissa1, shifted, order1
+
 
 def binary_subtraction(bin1, bin2):
-    decimal1 = binary_to_decimal(bin1)
-    decimal2 = binary_to_decimal(bin2)
-    decimal_diff = decimal1 - decimal2
-    return to_binary(decimal_diff)
+    """Вычитание двух двоичных чисел с выравниванием длины (bin1 - bin2)."""
+    is_neg1 = bin1.startswith('-')
+    is_neg2 = bin2.startswith('-')
+    num1 = bin1[1:] if is_neg1 else bin1
+    num2 = bin2[1:] if is_neg2 else bin2
 
-def subtraction(is_random=True):
-    float_number_part_array = [5, 25, 75, 125, 375, 625, 875]
-    float_part1 = random.choice(float_number_part_array)
-    int_part1 = random.randint(10, 126)
-    float_part2 = random.choice(float_number_part_array)
-    int_part2 = random.randint(10, 126)
+    int1, frac1 = num1.split('.') if '.' in num1 else (num1, '')
+    int2, frac2 = num2.split('.') if '.' in num2 else (num2, '')
 
+    # Выравнивание дробных частей
+    max_frac = max(len(frac1), len(frac2), 10)
+    frac1 = frac1.ljust(max_frac, '0')
+    frac2 = frac2.ljust(max_frac, '0')
+
+    # Выравнивание целых частей
+    max_int = max(len(int1), len(int2))
+    int1 = int1.zfill(max_int)
+    int2 = int2.zfill(max_int)
+
+    # Полное число без точки
+    num1 = int1 + frac1
+    num2 = int2 + frac2
+
+    # Вычитание как целых чисел
+    val1 = int(num1, 2) * (-1 if is_neg1 else 1)
+    val2 = int(num2, 2) * (-1 if is_neg2 else 1)
+    result_int = val1 - val2
+    is_negative = result_int < 0
+    result = bin(abs(result_int))[2:]
+
+    # Восстановление точки
+    result = result.zfill(max_int + max_frac)
+    point_pos = max_frac
+    binary_sum = result[:-point_pos] + '.' + result[-point_pos:]
+    if is_negative:
+        binary_sum = '-' + binary_sum
+    return binary_sum
+
+
+def clean_binary(binary_num):
+    """Удаление конечных нулей в дробной части двоичного числа."""
+    is_negative = binary_num.startswith('-')
+    num = binary_num[1:] if is_negative else binary_num
+    if '.' not in num:
+        return '-' + num if is_negative else num
+    int_part, frac_part = num.split('.')
+    frac_part = frac_part.rstrip('0')
+    result = int_part + '.' + frac_part if frac_part else int_part
+    return '-' + result if is_negative else result
+
+
+def binary_to_decimal(binary_num):
+    """Перевод двоичного числа в десятичное."""
+    is_negative = binary_num.startswith('-')
+    num = binary_num[1:] if is_negative else binary_num
+    int_part, frac_part = num.split('.') if '.' in num else (num, '')
+    decimal_int = int(int_part, 2) if int_part else 0
+    decimal_frac = sum(int(bit) * (2 ** -(i + 1)) for i, bit in enumerate(frac_part))
+    result = decimal_int + decimal_frac
+    return -result if is_negative else result
+
+
+def normalize_result(binary_sum, order):
+    """Нормализация результата вычитания."""
+    is_negative = binary_sum.startswith('-')
+    num = binary_sum[1:] if is_negative else binary_sum
+    if '.' not in num:
+        num += '.0'
+    int_part, frac_part = num.split('.')
+    if int_part == '0' and '1' not in frac_part:
+        return '0.0', 0
+    elif len(int_part) > 1:
+        shift = len(int_part) - 1
+        mantissa = '1.' + int_part[1:] + frac_part
+        new_order = order + shift
+    else:
+        mantissa = int_part + '.' + frac_part
+        new_order = order
+    if is_negative:
+        mantissa = '-' + mantissa
+    return mantissa, new_order
+
+
+def format_normalized(mantissa, order):
+    """Форматирование нормализованного результата в вид xxxx.x с удалением лишних нулей."""
+    if mantissa == '0.0':
+        return '0.0'
+    is_negative = mantissa.startswith('-')
+    m = mantissa[1:] if is_negative else mantissa
+    # Разделяем мантиссу на целую и дробную части
+    int_part, frac_part = m.split('.')
+    # Удаляем конечные нули из дробной части
+    frac_part = frac_part.rstrip('0')
+    # Сдвигаем мантиссу на order позиций
+    combined = int_part + frac_part
+    if order >= 0:
+        # Сдвиг влево: умножаем на 2^order
+        shifted = bin(int(combined, 2) << order)[2:]
+        # Восстанавливаем дробную часть
+        if len(frac_part) > 0:
+            shifted = shifted.zfill(len(shifted) + len(frac_part))
+            point_pos = len(frac_part)
+            result = shifted[:-point_pos] + '.' + shifted[-point_pos:]
+        else:
+            result = shifted + '.0'
+    else:
+        # Сдвиг вправо: делим на 2^(-order)
+        result = '0' * (-order) + combined
+        point_pos = len(frac_part) - order
+        result = result[:-point_pos] + '.' + result[-point_pos:]
+    # Удаляем ведущие нули в целой части и конечные в дробной
+    int_part, frac_part = result.split('.')
+    int_part = int_part.lstrip('0') or '0'
+    frac_part = frac_part.rstrip('0')
+    result = int_part + '.' + frac_part if frac_part else int_part
+    return '-' + result if is_negative else result
+
+
+def subtraction(int_part1, float_part1, int_part2, float_part2):
+    """Основная функция вычитания с пошаговым выводом."""
     num1 = int_part1 + float_part1 / 1000
     num2 = int_part2 + float_part2 / 1000
-    answer = str(round(num1 - num2, 3))
 
     bin1 = to_binary(num1)
     bin2 = to_binary(num2)
-    binary_diff = binary_subtraction(bin1, bin2)
-    answer_binary = to_binary(answer)
 
-    normalized_bin1, order1 = normalize_binary(bin1)
-    normalized_bin2, order2 = normalize_binary(bin2)
+    mantissa1, order1 = normalize_binary(bin1)
+    mantissa2, order2 = normalize_binary(bin2)
 
-    aligned_bin1, aligned_bin2 = align_binary(normalized_bin1, normalized_bin2)
-    normalized_diff, diff_order = normalize_binary(binary_diff)
+    aligned_m1, aligned_m2, aligned_order = align_orders(mantissa1, order1, mantissa2, order2)
+
+    binary_diff = binary_subtraction(aligned_m1, aligned_m2)  # Теперь вычитание
+    binary_diff_cleaned = clean_binary(binary_diff)
+
+    normalized_diff, final_order = normalize_result(binary_diff, aligned_order)
+
+    formatted_normalized = format_normalized(normalized_diff, final_order)
+
+    decimal_result = binary_to_decimal(normalized_diff) * (2 ** final_order)
 
     return {
         'VAR1': num1,
         'VAR2': num2,
-        'TITLE1_binary1': "Переведите первое слагаемое в двоичный код",
+        'TITLE1_binary1': 'Переведите первое вычитаемое в двоичный код',
         'ANSWER1_binary1': bin1,
-        'TITLE2_binary2': "Переведите второе слагаемое в двоичный код",
+        'TITLE2_binary2': 'Переведите второе вычитаемое в двоичный код',
         'ANSWER2_binary2': bin2,
-        'TITLE3_normalize1': "Выполните нормализацию первого слагаемого (пример: 1.1101101 * 2^4).",
-        'ANSWER3_normalized1': f"{normalized_bin1} * 2^{order1}",
-        'TITLE4_normalize2': "Выполните нормализацию второго слагаемого",
-        'ANSWER4_normalized2': f"{normalized_bin2} * 2^{order2}",
-        'TITLE5_align1': "Приведите к одному порядку первое слагаемое",
-        'ANSWER5_align1': aligned_bin1,
-        'TITLE6_align2': "Приведите к одному порядку второе слагаемое",
-        'ANSWER6_align2': aligned_bin2,
-        'TITLE7_subtraction': "Выполните операцию вычитания (ответ запишите в двоичной системе счисления)",
-        'ANSWER7_subtraction': binary_diff,
-        'TITLE8_normalize_result': "Выполните нормализацию результата",
-        'ANSWER8_normalized_result': f"{normalized_diff} * 2^{diff_order}",
-        'TITLE9_decimal_result': "Переведите результат в десятичную систему счисления (целую и дробную часть разделяйте точкой).",
-        'ANSWER9_decimal_result': answer
+        'TITLE3_normalize1': 'Выполните нормализацию и приведите к одному порядку первое вычитаемое (пример: 1.1101101 * 2^4)',
+        'ANSWER5_align1': f"{aligned_m1} * 2^{aligned_order}",
+        'TITLE4_normalize2': 'Выполните нормализацию и приведите к одному порядку второе вычитаемое',
+        'ANSWER6_align2': f"{aligned_m2} * 2^{aligned_order}",
+        'TITLE7_subtraction': 'Выполните операцию вычитания (ответ запишите в двоичной системе счисления)',
+        'ANSWER7_subtraction': f"{binary_diff_cleaned} * 2^{aligned_order}",
+        'TITLE8_normalized': 'Выполните нормализацию результата (пример: -1.101)',
+        'ANSWER8_normalized': formatted_normalized,
+        'TITLE9_decimal': 'Переведите результат в десятичную систему счисления (целую и дробную часть разделяйте точкой).',
+        'ANSWER9_decimal': decimal_result
     }
 
-def generate():
+
+def generate(num_tasks=100):
+    float_parts = [125, 375, 625]
     tasks_ret = []
-    for i in range(100):
-        tasks_ret.append(subtraction())
+    for _ in range(num_tasks):
+        int_part1 = random.randint(1, 100)
+        float_part1 = random.choice(float_parts)
+        int_part2 = random.randint(1, 100)
+        float_part2 = random.choice(float_parts)
+        tasks_ret.append(subtraction(int_part1, float_part1, int_part2, float_part2))
     return tasks_ret
+
